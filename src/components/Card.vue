@@ -1,5 +1,8 @@
 <template>
   <div class="card">
+    <button>
+      詳細
+    </button>
     <button class="close-button" @click="removeCardFromList">
       ×
     </button>

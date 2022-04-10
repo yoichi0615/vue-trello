@@ -7,6 +7,11 @@ const savedLists = localStorage.getItem('trello-lists')
 
 const store = new Vuex.Store({
   state: {
+    modal: {
+      isOpen: false,
+      resolve:(bool) => bool,
+      reject:(bool) => bool
+    },
     lists: savedLists ? JSON.parse(savedLists): [
       {
         title: 'Backlog',
@@ -37,6 +42,17 @@ const store = new Vuex.Store({
     },
     updateList(state, payload) {
       state.lists = payload.lists
+    },
+    openModal(state, payload) {
+      state.modal = payload
+    },
+    commitResetModalState(state) {
+      state.modal = {
+        type:"",
+        text:"",
+        resolve:(bool) => bool,
+        reject:(bool) => bool,
+      }
     }
   },
   actions: {
@@ -54,6 +70,27 @@ const store = new Vuex.Store({
     },
     updateList(context, payload) {
       context.commit('updateList', payload)
+    },
+    openModal(context, payload) {
+      context.commit('openModal', payload)
+    },
+    actionModalOpen({commit}, payload) {
+      return new Promise((resolve, reject) => {
+        const option = {
+          resolve,
+          reject,
+          ...payload,
+        }
+        commit('commitModalOpen', option)
+      })
+    },
+    actionModalResolve({commit, state}) {
+      state.modal.reslolve(true)
+      commit('commitResetModalState')
+    },
+    actionModalReject({commit, state}) {
+      state.modal.reject(false)
+      commit('commitResetModalState')
     }
   },
   getters: {

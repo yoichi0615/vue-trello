@@ -15,6 +15,8 @@
   </form>
 </template>
 <script>
+// import CardDetail from './CardDetail'
+
 export default {
   props: {
     listIndex: {
